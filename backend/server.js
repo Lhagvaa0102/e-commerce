@@ -24,15 +24,18 @@ app.post("/products", async (request, res) => {
     await sql`INSERT INTO products(name, description, price, image_url ) VALUES ( ${name}, ${description}, ${price}, ${image_url} )`;
   res.json({ data: response });
 });
-app.get(`/products/id`, async (request, res) => {
+app.get("/products/id", async (request, res) => {
   const { id } = request.body;
   const response = await sql`SELECT * FROM products WHERE id = ${id} `;
   res.json({ product: response });
 });
 app.post("/cart", async (request, res) => {
-  const response = await sql`INSERT INTO order_items ()`;
+  const { order_id, product_id, quanity, price } = request.body;
+  const response =
+    await sql`INSERT INTO order_items ( quanity, price) VALUES (  ${quanity}, ${price})`;
+  res.json({ cart: response });
 });
-app.get(`/cart`, async (request, res) => {
+app.get("/cart", async (request, res) => {
   const response = await sql`SELECT * FROM order_items `;
   res.json({ data: response });
 });
